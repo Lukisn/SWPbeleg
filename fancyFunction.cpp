@@ -4,17 +4,76 @@
 #include <algorithm>
 #include "fancyFunction.h"
 
+#include <fstream>
+#include <string>
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+
 // your task is to modify this class as needed
 // please keep in mind to write a full documentation
 template<class T>
 class Database
 {
     private:
-        /// ??
+        fs::path db_root = "./.db/";
     public:
-        T retrieve( std::vector<T> const & ){ throw std::out_of_range( "value not found in db!" ); }
-        void add( std::vector<T> const &, T const & ){ } 
-        void dump(){ };
+        T retrieve( std::vector<T> const & v)
+        {
+            // transform vector to path:
+            fs::path index_path = db_root;
+            for(size_t i = 0; i != v.size(); i++) {
+                //std::cout << v.at(i);  // debug output
+                if (i == v.size() - 1) {  // last element (leaf node)
+                    //std::cout << ", leaf element." << std::endl;  // debug output
+                    index_path.append(std::to_string(v.at(i)) + ".leaf");
+                }
+                else {  // all intermediate elements (path nodes)
+                    //std::cout << ", path element." << std::endl;  // debug output
+                    index_path.append(std::to_string(v.at(i)));
+                }
+            }
+            std::cout << "search path: " << index_path << std::endl;  // debug output
+
+            // check if path exists and retrieve data:
+            bool existing = fs::exists(index_path);
+            if (existing) {
+                //std::cout << "existing" << std::endl;  // debug output
+                double value;
+                // open and read file
+                std::ifstream infile;
+                infile.open(index_path);
+                if (infile.is_open()) {
+                    // read first line and convert to double
+                    std::string first_line;
+                    getline(infile, first_line);
+                    //std::cout << "first_line: " << first_line << std::endl;  // debug output
+                    value = stod(first_line);
+                }
+                else {
+                    throw std::ios_base::failure("unable to open file!");
+                }
+                infile.close();
+
+                // return data read from file:
+                return value;
+            }
+            else {
+                throw std::out_of_range( "value not found in db!" );
+            }
+        }
+
+        void add( std::vector<T> const &, T const & )
+        {
+            // transform vector to path
+            // find out if path already exists
+            // add folderstructure and data file
+        }
+
+        void dump()
+        {
+            // create map from folder structure
+            // write map to file
+        };
         /// ??
 };
 
@@ -44,7 +103,7 @@ int main( int argc, char ** argv )
         //save result to database
         db.add( values, result );
     }
-    
+
     std::cout << result << std::endl;
     return 0;
 }
