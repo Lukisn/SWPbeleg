@@ -39,7 +39,7 @@ class Database
                     index_path.append(stringify(vec.at(i)));
                 }
             }
-            std::cout << "search path: " << index_path << std::endl;  // debug output
+            //std::cout << "search path: " << index_path << std::endl;  // debug output
             return index_path;
         }
     public:
@@ -138,6 +138,6 @@ int main( int argc, char ** argv )
         db.add( values, result );
     }
 
-    std::cout << result << std::endl;
+    std::cout << std::setprecision(10) << std::fixed << result << std::endl;
     return 0;
 }
