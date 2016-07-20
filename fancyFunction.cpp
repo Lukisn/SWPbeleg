@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <map>
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 
@@ -17,6 +18,7 @@ class Database
 {
     private:
         fs::path db_root = "./.db/";  // root folder for database tree
+        std::string dumpfilename = "dump.db";  // dump filename
         int precision = 10;  // decimal precision for path and data variables
         std::string stringify(T const & val)
         {
@@ -106,8 +108,51 @@ class Database
 
         void dump()
         {
+            std::map<std::string, std::string> dbmap;
+            std::cout << "dumping..." << std::endl;
             // create map from folder structure
-            // write map to file
+            for(auto& entry: fs::recursive_directory_iterator(db_root)) {
+                fs::path current_path = entry.path();
+                //std::cout << "current path: " << current_path << std::endl;  // debug output
+                if (current_path.extension() == ".leaf") {
+                    //std::cout << ", leaf file." << std::endl;  // debug output
+                    std::string key = current_path.parent_path();
+                    key += "/";
+                    key += current_path.stem();
+                    std::string root_string = db_root;
+                    key = key.substr(root_string.size());
+                    //std::cout << "key: " << key << std::endl;  // debug output
+
+                    std::string value;
+                    std::ifstream infile;
+                    infile.open(current_path);
+                    if (infile.is_open()) {
+                        // read first line and convert to double
+                        getline(infile, value);
+                    }
+                    else {
+                        throw std::ios_base::failure("unable to open file!");
+                    }
+                    infile.close();
+                    //std::cout << "val: " << value << std::endl;  // debug output
+
+                    // add to dumpfile:
+                    dbmap.insert(make_pair(key, value));
+                }
+            }
+
+            // write map to file:
+            std::ofstream outfile;
+            outfile.open(dumpfilename);
+            if (outfile.is_open()) {
+                for (auto it : dbmap) {
+                    outfile << it.first << "=" << it.second << std::endl;
+                }
+            }
+            else {
+                throw std::ios_base::failure("unable to open file!");
+            }
+            outfile.close();
         };
 };
 
@@ -139,5 +184,8 @@ int main( int argc, char ** argv )
     }
 
     std::cout << std::setprecision(10) << std::fixed << result << std::endl;
+
+    db.dump();
+
     return 0;
 }
