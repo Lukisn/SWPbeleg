@@ -20,12 +20,14 @@ class Database
         fs::path db_root = "./.db/";  // root folder for database tree
         std::string dumpfilename = "dump.db";  // dump filename
         int precision = 10;  // decimal precision for path and data variables
+
         std::string stringify(T const & val)
         {
             std::stringstream ss;
             ss << std::setprecision(precision) << std::fixed << val;
             return ss.str();
         }
+
         fs::path vectorToPath(std::vector<T> const & vec)
         {
             // transform vector to path:
@@ -44,6 +46,7 @@ class Database
             //std::cout << "search path: " << index_path << std::endl;  // debug output
             return index_path;
         }
+
     public:
         T retrieve( std::vector<T> const & vec)
         {
@@ -109,7 +112,6 @@ class Database
         void dump()
         {
             std::map<std::string, std::string> dbmap;
-            std::cout << "dumping..." << std::endl;
             // create map from folder structure
             for(auto& entry: fs::recursive_directory_iterator(db_root)) {
                 fs::path current_path = entry.path();
@@ -153,7 +155,7 @@ class Database
                 throw std::ios_base::failure("unable to open file!");
             }
             outfile.close();
-        };
+        }
 };
 
 int main( int argc, char ** argv )

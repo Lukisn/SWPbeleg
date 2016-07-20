@@ -9,6 +9,9 @@ all:
 clean:
 	rm -f *.x
 	rm -rf ./.db/
+	rm -f *.db
+	rm -f *.dat
+	rm -f *.eps
 
 .PHONY:
 test:

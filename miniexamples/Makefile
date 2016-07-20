@@ -9,6 +9,7 @@ folders:
 mapfile:
 	$(GCC) mapfile.cpp -o mapfile.x $(OPT)
 
+.PHONY:
 clean:
 	rm -f *.x *.db
 	rm -rf ./a/
