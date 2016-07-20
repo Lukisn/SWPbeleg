@@ -1,12 +1,13 @@
 GCC = g++-5
+OPT = -std=c++11
 
 all: folders mapfile
 
 folders:
-	$(GCC) folders.cpp -o folders.x -std=c++11 -lstdc++fs
+	$(GCC) folders.cpp -o folders.x $(OPT) -lstdc++fs
 
 mapfile:
-	$(GCC) mapfile.cpp -o mapfile.x -std=c++11
+	$(GCC) mapfile.cpp -o mapfile.x $(OPT)
 
 clean:
 	rm -f *.x *.db
