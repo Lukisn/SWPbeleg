@@ -13,6 +13,10 @@ namespace fs = std::experimental::filesystem;
 
 // your task is to modify this class as needed
 // please keep in mind to write a full documentation
+/*! \brief short comment
+ *
+ *  detailed description
+ */
 template<class T>
 class Database
 {
@@ -21,6 +25,10 @@ class Database
         std::string dumpfilename = "dump.db";  // dump filename
         int precision = 10;  // decimal precision for path and data variables
 
+        /*! \brief short comment
+         *
+         *  detailed description
+         */
         std::string stringify(T const & val)
         {
             std::stringstream ss;
@@ -28,6 +36,10 @@ class Database
             return ss.str();
         }
 
+        /*! \brief short comment
+         *
+         *  detailed description
+         */
         fs::path vectorToPath(std::vector<T> const & vec)
         {
             // transform vector to path:
@@ -48,6 +60,10 @@ class Database
         }
 
     public:
+        /*! \brief short comment
+         *
+         *  detailed description
+         */
         T retrieve( std::vector<T> const & vec)
         {
             // transform vector to path:
@@ -81,6 +97,10 @@ class Database
             }
         }
 
+        /*! \brief short comment
+         *
+         *  detailed description
+         */
         void add( std::vector<T> const & vec, T const & val)
         {
             // transform vector to path:
@@ -109,6 +129,10 @@ class Database
             }
         }
 
+        /*! \brief short comment
+         *
+         *  detailed description
+         */
         void dump()
         {
             std::map<std::string, std::string> dbmap;
@@ -158,6 +182,10 @@ class Database
         }
 };
 
+/*! \brief short comment
+ *
+ *  detailed description
+ */
 int main( int argc, char ** argv )
 {
     // transform strings passed to executable into vector<type>

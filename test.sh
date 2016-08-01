@@ -30,4 +30,4 @@ echo "gnuifiing dumped data..."
 python3 gnuify.py dump.db plot.dat
 
 echo "plotting data..."
-gnuplot plotdump.gnu
+gnuplot plot.gnu

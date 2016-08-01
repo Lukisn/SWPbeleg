@@ -5,6 +5,9 @@ import datetime
 
 
 def main():
+    """
+    Main function.
+    """
     # process command line arguments:
     argc = len(sys.argv)
     if argc < 2:  # not enough arguments
@@ -31,8 +34,8 @@ def main():
                         outfile.write("{x}, {y}, {v}\n".format(
                             x=keys[0], y=keys[1], v=val)
                         )
-    except Exception as err:
-        print(err)
+    except Exception as e:
+        print(e)
 
 
 if __name__ == "__main__":
