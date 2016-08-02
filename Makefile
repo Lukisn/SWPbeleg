@@ -16,3 +16,7 @@ clean:
 .PHONY:
 test:
 	bash test.sh
+
+.PHONY:
+docs:
+	doxygen Doxyfile
