@@ -1,4 +1,4 @@
-GCC = g++-5
+GCC = g++-5  # MAYBE NEEDS CHANGING TO RUN SMOOTHLY!
 OPT = -std=c++11 -lstdc++fs
 EXE = ./fancy.x
 

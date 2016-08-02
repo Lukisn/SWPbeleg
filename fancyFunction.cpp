@@ -15,12 +15,35 @@ namespace fs = std::experimental::filesystem;
 
 /*!
  * \mainpage Documentation Main Page
- * 
+ *
  * \section Overview
- * ...
- * 
+ * This project is a short demo of a concept for a simple database like
+ * application. This simple command line tool written in C++ handles lookups
+ * and writing to a folder structure base database. Additionally it dumps the
+ * current database state to a single file for further investigation.
+ *
+ * The projects central point is the Makefile that is used compile the source
+ * code and clean the entire directory. Additionally it has two targets for
+ * running a simple testing bash-script and creating the documentation with
+ * Doxygen.
+ *
  * \section Usage
- * ...
+ * According to the above mentioned structure of the project the following
+ * usage is suggested:
+ *
+ * - at first compile the source by simply using makes default target.
+ * "$> make"
+ *
+ * - if that succesfully runs the test-script can be run.
+ * "$> make test"
+ * This runs the test.sh script that calls the command line interface a couple
+ * of times to create a small database.The dumped data is then processed further
+ * with a python script to prepare it for plotting the contained 2d data with
+ * gnuplot. As final step gnuplot is run to show the databases contents in 2d.
+ *
+ * - The last possible target in the Makfile is
+ * "$> make docs"
+ * This created the HTML documentation using Dpxygen in the doc/html/ folder.
  */
 
 /*!
