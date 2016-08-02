@@ -3,7 +3,7 @@
 /** @file */
 
 
-/*! 
+/*!
  * \class Product
  * \brief functor class for product calculation
  */
@@ -20,50 +20,59 @@ struct Product
      * calculation continous product of input data
      */
     void operator()( T const & val ) { product_ *= val; }
-  
-    T product_; /**< data member for direct access */
+
+    T product_; /*!< data member for direct access */
 };
 
 
-// ... 
+/*!
+ * \fn superFancyFunction
+ * \brief Fancy function.
+ *
+ * This function calculates the product of all entries of a given argument
+ * vector.
+ *
+ * \param arguments argument vector used for super fancy calculation.
+ * \returns super fancy product of all entries in the argument vector.
+ */
 template<class T>
 T superFancyFunction( std::vector<T> const & arguments )
 {
     Product<T> product = for_each( arguments.begin(), arguments.end(), Product<T>() );
-    return product.product_; 
+    return product.product_;
 }
 
 inline void doTransformation( std::vector<std::string> const & arguments, std::vector<int> & values )
 {
-    std::transform( arguments.begin(), arguments.end(), values.begin(), 
+    std::transform( arguments.begin(), arguments.end(), values.begin(),
             []( std::string const & arg )
-            { 
+            {
                 try
-                { 
-                    return std::stoi( arg ); 
+                {
+                    return std::stoi( arg );
                 }
                 catch(...)
-                { 
-                    return 1; 
+                {
+                    return 1;
                 }
-            } 
+            }
     );
 }
 
 inline void doTransformation( std::vector<std::string> const & arguments, std::vector<double> & values )
 {
-    std::transform( arguments.begin(), arguments.end(), values.begin(), 
+    std::transform( arguments.begin(), arguments.end(), values.begin(),
             []( std::string const & arg )
-            { 
+            {
                 try
-                { 
-                    return std::stod( arg ); 
+                {
+                    return std::stod( arg );
                 }
                 catch(...)
-                { 
-                    return 1.0; 
+                {
+                    return 1.0;
                 }
-            } 
+            }
     );
 }
 
@@ -76,4 +85,3 @@ std::vector<T> transformStringsToValues( int argc, char ** argv )
     doTransformation( arguments, values );
     return values;
 }
-
