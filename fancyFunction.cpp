@@ -11,9 +11,21 @@
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 
+/*! \file */
+
+/*!
+ * \mainpage Documentation Main Page
+ * 
+ * \section Overview
+ * ...
+ * 
+ * \section Usage
+ * ...
+ */
+
 /*!
  * \class Database
- * \brief Database class.
+ * \brief database class.
  *
  * This class handles the basic actions implemented to act as a simple
  * database. These actions are:
