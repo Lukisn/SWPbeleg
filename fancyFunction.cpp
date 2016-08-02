@@ -11,23 +11,48 @@
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 
-// your task is to modify this class as needed
-// please keep in mind to write a full documentation
-/*! \brief short comment
+/*! \brief Database class.
  *
- *  detailed description
+ *  This class handles the basic actions implemented to act as a simple
+ *  database. These actions are:
+ *  - retrieve: retrieve an element from the database
+ *  - add: add an element to the database
+ *  - dump: dump the complete database to a single ascii filesystem
+ *
+ *  The database is implemented as a hidden folder structure with the root
+ *  folder beeing ".db/" (just like .git/ in git). The coordinates of the
+ *  database are arbitrarily long sequences of floating point numbers. These
+ *  coordinates make up the folders along the path to the actual data entry.
+ *  The entry is indicated by a file with the ending ".leaf". This file contains
+ *  the data that is stored in the database.
+ *
+ *  example path: .db/1.000000/2.000000/5.000000/3.000000.leaf
+ *  example data in ".../3.000000.leaf": "30.000000"
+ *
+ *  A dump of the entire database is created in a file called "dump.db".
+ *  In this fileeach entry is placed on a single line in the following
+ *  structure: "key=value". The key is the path of the data element and the
+ *  value is the actual data. For example (like above):
+ *
+ *  1.000000/2.000000/5.000000/3.000000=30.000000
  */
 template<class T>
 class Database
 {
     private:
-        fs::path db_root = "./.db/";  // root folder for database tree
-        std::string dumpfilename = "dump.db";  // dump filename
-        int precision = 10;  // decimal precision for path and data variables
+        fs::path db_root = "./.db/";  /*!< root folder name for database tree */
+        std::string dumpfilename = "dump.db";  /*!< dump filename */
+        int precision = 10;  /*!< decimal precision for path and data variables */
 
-        /*! \brief short comment
+        /*! \brief private helper function for consistend stringifying of a
+         *  floating point value.
          *
-         *  detailed description
+         *  This function provides a consistend means to create strings from
+         *  floating point values. It does this by using a predefined fixed
+         *  precision defined within the class.
+         *
+         *  \param val floating point value to be stringified.
+         *  \return string version of floating point value.
          */
         std::string stringify(T const & val)
         {
@@ -36,9 +61,16 @@ class Database
             return ss.str();
         }
 
-        /*! \brief short comment
+        /*! \brief private helper funtion for converting a vector to a path.
          *
-         *  detailed description
+         *  This function takes a vector and creates a path from its elements.
+         *  The path consists of the vectors elements as intermediate folders
+         *  and a *.leaf file for the last entry of the vector. This path acts
+         *  as the location for storing the data belonging to this index vector.
+         *
+         *  \param vector of arbitrary length
+         *  \returns path object (fs::path) with vector elements as intermediate
+         *  folders
          */
         fs::path vectorToPath(std::vector<T> const & vec)
         {
@@ -60,11 +92,20 @@ class Database
         }
 
     public:
-        /*! \brief short comment
+        /*! \brief Function for retrieving data elements from the database.
          *
-         *  detailed description
+         *  This function tries to find the data entry for the given coordinate
+         *  vector. If the database contains a value, this value is returned.
+         *  Otherwise a std::out_of_range exception is thrown to indicate, that
+         *  no data can be retrieved for the given key vector.
+         *
+         *  \param vec index vector to look up.
+         *  \returns value for index vector stored in the database.
+         *
+         *  \throws std::out_of_range exception.
+         *  \throws std::ios_base::failure exception.
          */
-        T retrieve( std::vector<T> const & vec)
+        T retrieve(std::vector<T> const & vec)
         {
             // transform vector to path:
             fs::path search_path = vectorToPath(vec);
@@ -97,11 +138,20 @@ class Database
             }
         }
 
-        /*! \brief short comment
+        /*! \brief Function for adding data to the database.
          *
-         *  detailed description
+         *  This Function tries to add new data to the database. If the key
+         *  vector already exists in the data base a logic_error exception is
+         *  thrown. Otherwise the value is pushed to the database by writing
+         *  the accoring path and file to the folder structure.
+         *
+         *  \param vec index vector to store data for.
+         *  \param val data value to store in the database.
+         *
+         *  \throws std::logic_error exception.
+         *  \throws std::ios_base::failure exception.
          */
-        void add( std::vector<T> const & vec, T const & val)
+        void add(std::vector<T> const & vec, T const & val)
         {
             // transform vector to path:
             fs::path search_path = vectorToPath(vec);
@@ -129,9 +179,15 @@ class Database
             }
         }
 
-        /*! \brief short comment
+        /*! \brief Function for dumping the database folder structure to a single file.
          *
-         *  detailed description
+         *  This function traverses the entire database folder structure
+         *  recursively and dumps the data to a single ascii file. This file is
+         *  constructed by writing a key=value pair on each line. The key is the
+         *  former path in the database and the value is the content of the
+         *  *.leaf file.
+         *
+         *  \throws std::ios_base::failure exception.
          */
         void dump()
         {
@@ -182,9 +238,21 @@ class Database
         }
 };
 
-/*! \brief short comment
+/*! \brief Main function.
  *
- *  detailed description
+ *  This function contains the behaviour of the command line program created
+ *  using the Database class.
+ *
+ *  The basic usage of this simple command line utility is the following:
+ *  $> fancy.x [c1, [c2, [c2, [...]]]]
+ *
+ *  where ci's make the arbitrarily long coordinate vector of the data element
+ *  in question. If this element is already stored it is simply returned. If it
+ *  does not yet exist, a super fancy function called "superFancyFunction" is
+ *  called on the input vector. The result of that function is then stored in
+ *  the database folder structure for later retrieval. Every time the program
+ *  is run a dump of the current state of the database is created. so the folder
+ *  structure and the single file dump are always in sync.
  */
 int main( int argc, char ** argv )
 {
