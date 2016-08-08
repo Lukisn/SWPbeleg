@@ -32,18 +32,18 @@ namespace fs = std::experimental::filesystem;
  * usage is suggested:
  *
  * - at first compile the source by simply using makes default target.
- * `$> make`
+ * `"$> make"`
  *
  * - if that succesfully runs the test-script can be run.
- * `$> make test`
+ * `"$> make test"`
  * This runs the test.sh script that calls the command line interface a couple
  * of times to create a small database.The dumped data is then processed further
  * with a python script to prepare it for plotting the contained 2d data with
  * gnuplot. As final step gnuplot is run to show the databases contents in 2d.
  *
  * - The last possible target in the Makfile is
- * `$> make docs`
- * This created the HTML documentation using Dpxygen in the doc/html/ folder.
+ * `"$> make docs"`.
+ * This created the HTML documentation using Doxygen in the doc/html/ folder.
  */
 
 /*!
