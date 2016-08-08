@@ -32,17 +32,17 @@ namespace fs = std::experimental::filesystem;
  * usage is suggested:
  *
  * - at first compile the source by simply using makes default target.
- * "$> make"
+ * `$> make`
  *
  * - if that succesfully runs the test-script can be run.
- * "$> make test"
+ * `$> make test`
  * This runs the test.sh script that calls the command line interface a couple
  * of times to create a small database.The dumped data is then processed further
  * with a python script to prepare it for plotting the contained 2d data with
  * gnuplot. As final step gnuplot is run to show the databases contents in 2d.
  *
  * - The last possible target in the Makfile is
- * "$> make docs"
+ * `$> make docs`
  * This created the HTML documentation using Dpxygen in the doc/html/ folder.
  */
 
@@ -63,15 +63,15 @@ namespace fs = std::experimental::filesystem;
  * The entry is indicated by a file with the ending ".leaf". This file contains
  * the data that is stored in the database.
  *
- * example path: .db/1.000000/2.000000/5.000000/3.000000.leaf
- * example data in ".../3.000000.leaf": "30.000000"
+ * example path: `.db/1.000000/2.000000/5.000000/3.000000.leaf`
+ * example data in `.../3.000000.leaf`: `30.000000`
  *
  * A dump of the entire database is created in a file called "dump.db".
  * In this fileeach entry is placed on a single line in the following
  * structure: "key=value". The key is the path of the data element and the
  * value is the actual data. For example (like above):
  *
- * 1.000000/2.000000/5.000000/3.000000=30.000000
+ * `1.000000/2.000000/5.000000/3.000000=30.000000`
  */
 template<class T>
 class Database
